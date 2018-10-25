@@ -18,6 +18,8 @@ then
   fi
 fi
 
+#commands
+
 context=$(mktemp -d)
 docker build -t tsuru-build -f Dockerfile.build $context
 rmdir $context
@@ -28,7 +30,7 @@ LOCAL_PKG=${GOPATH}'/pkg/linux_amd64'
 CONTAINER_PKG='/go/pkg/linux_amd64'
 CONTAINER_PROJECT_PATH='/go/src/github.com/tsuru/tsuru'
 BUILD_CMD="go build -i -v --ldflags '-linkmode external -extldflags \"-static\"' -o build/tsurud ./cmd/tsurud"
-
+DATE = `date`
 set -x
 
 docker run --rm -v ${LOCAL_PKG}:${CONTAINER_PKG} -v ${PWD}:${CONTAINER_PROJECT_PATH} -w ${CONTAINER_PROJECT_PATH} -e CC=/usr/bin/gcc -e GOPATH=/go ${BUILD_IMAGE} sh -c "${BUILD_CMD}"
